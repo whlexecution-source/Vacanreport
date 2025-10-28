@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="th" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +7,13 @@
     <!-- 1. Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
     <!-- 2. Use Inter font --><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- ใช้ฟอนต์ Noto Sans Thai แทน Inter เพื่อรองรับภาษาไทย -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- 3. Add simple icons (Heroicons) --><script type_application_javascript src="https://unpkg.com/heroicons@2.1.1/24/outline/index.js"></script>
     <style>
         /* Custom styles */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Noto Sans Thai', sans-serif;
         }
         /* Hide number input arrows */
         input[type=number]::-webkit-inner-spin-button,
@@ -30,31 +31,31 @@
     <!-- Header --><header class="bg-white shadow-sm">
         <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <!-- Logo - Added here --><div class="flex-shrink-0">
-                <img class="h-10 w-auto" src="https://drive.google.com/file/d/1aBNyqwyytFhwGyChWZ-2M7KMghKyR5QS/view?usp=sharing="Company Logo" onerror="this.alt='Logo'; this.style.display='none';">
+                <img class="h-10 w-auto" src="YOUR_LOGO_URL_HERE" alt="โลโก้บริษัท" onerror="this.alt='Logo'; this.style.display='none';">
             </div>
             <div class="flex-grow ml-4">
-                <h1 class="text-2xl font-bold tracking-tight text-gray-900">BA Vacancy Reporter</h1>
-                <p class="text-gray-600">Report upcoming store vacancies for BA replacements.</p>
+                <h1 class="text-2xl font-bold tracking-tight text-gray-900">ระบบรายงาน BA ว่าง</h1>
+                <p class="text-gray-600">รายงานตำแหน่ง BA ว่างในร้านค้าล่วงหน้า</p>
             </div>
         </div>
     </header>
 
     <!-- Main Content --><main class="max-w-4xl mx-auto p-4 sm:px-6 lg:px-8">
         <!-- Search Bar --><div class="mb-6">
-            <label for="search" class="block text-sm font-medium text-gray-700 sr-only">Search Stores</label>
+            <label for="search" class="block text-sm font-medium text-gray-700 sr-only">ค้นหาร้านค้า</label>
             <div class="relative rounded-lg shadow-sm">
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
                     </svg>
                 </div>
-                <input type="search" id="store-search" class="block w-full rounded-lg border-gray-300 pl-10 py-2.5 text-base focus:border-blue-500 focus:ring-blue-500" placeholder="Search by store name or BA name...">
+                <input type="search" id="store-search" class="block w-full rounded-lg border-gray-300 pl-10 py-2.5 text-base focus:border-blue-500 focus:ring-blue-500" placeholder="ค้นหาด้วยชื่อร้านค้าหรือชื่อ BA...">
             </div>
         </div>
 
         <!-- Store Card Grid --><section>
             <div id="store-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                <!-- Store cards will be injected here by JavaScript --><p id="no-results" class="text-gray-500 hidden col-span-full text-center">No stores found.</p>
+                <!-- Store cards will be injected here by JavaScript --><p id="no-results" class="text-gray-500 hidden col-span-full text-center">ไม่พบร้านค้าที่ค้นหา</p>
             </div>
         </section>
     </main>
@@ -62,9 +63,9 @@
     <!-- Report Vacancy Modal --><div id="report-modal" class="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-75 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 m-4 overflow-y-auto max-h-[90vh] transform transition-all">
             <!-- Modal Header --><div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-gray-900" id="modal-title">Report Vacancy</h3>
+                <h3 class="text-xl font-semibold text-gray-900" id="modal-title">รายงานตำแหน่งว่าง</h3>
                 <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
-                    <span class="sr-only">Close</span>
+                    <span class="sr-only">ปิด</span>
                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -73,7 +74,7 @@
 
             <!-- Modal Body --><form id="report-form" class="mt-4 space-y-4">
                 <!-- Store Info --><div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
-                    <p class="text-sm font-medium text-gray-500">Store</p>
+                    <p class="text-sm font-medium text-gray-500">ร้านค้า</p>
                     <p class="text-lg font-semibold text-gray-900" id="modal-store-name">Siam Paragon</p>
                     <p class="text-sm text-gray-700 mt-1" id="modal-ba-info">Current BA: Arisa V.</p>
                 </div>
@@ -81,80 +82,80 @@
                 <!-- Form Inputs --><input type="hidden" id="modal-store-id">
                 
                 <div>
-                    <label for="exit-date" class="block text-sm font-medium text-gray-700">BA's Last Day (Exit Date)</label>
+                    <label for="exit-date" class="block text-sm font-medium text-gray-700">วันสุดท้ายของ BA (วันที่ลาออก)</label>
                     <input type="date" id="exit-date" name="exit-date" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
                 
                 <div>
-                    <label for="reason" class="block text-sm font-medium text-gray-700">Reason for Vacancy</label>
+                    <label for="reason" class="block text-sm font-medium text-gray-700">เหตุผลของตำแหน่งว่าง</label>
                     <select id="reason" name="reason" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="">Select a reason...</option>
-                        <option value="Resigned">Resigned</option>
-                        <option value="Terminated">Terminated</option>
-                        <option value="Transferred">Transferred</option>
-                        <option value="Maternity Leave">Maternity Leave</option>
-                        <option value="Other">Other</option>
+                        <option value="">เลือกเหตุผล...</option>
+                        <option value="Resigned">ลาออก</option>
+                        <option value="Terminated">ถูกเลิกจ้าง</option>
+                        <option value="Transferred">ย้ายสาขา</option>
+                        <option value="Maternity Leave">ลาคลอด</option>
+                        <option value="Other">อื่นๆ</option>
                     </select>
                 </div>
 
                 <!-- Exit Interview --><div>
-                    <label for="exit-interview" class="block text-sm font-medium text-gray-700">Exit Interview Status</label>
+                    <label for="exit-interview" class="block text-sm font-medium text-gray-700">สถานะการสัมภาษณ์ (Exit Interview)</label>
                     <select id="exit-interview" name="exit-interview" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="">Select status...</option>
-                        <option value="Scheduled">Scheduled</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Requested">Requested (Pending)</option>
-                        <option value="Declined">BA Declined</option>
-                        <option value="Not Required">Not Required</option>
+                        <option value="">เลือกสถานะ...</option>
+                        <option value="Scheduled">นัดหมายแล้ว</option>
+                        <option value="Completed">สัมภาษณ์เสร็จสิ้น</option>
+                        <option value="Requested">ร้องขอแล้ว (รอดำเนินการ)</option>
+                        <option value="Declined">BA ปฏิเสธ</option>
+                        <option value="Not Required">ไม่จำเป็นต้องสัมภาษณ์</option>
                     </select>
                 </div>
 
                 <!-- NEW: Mock Exit Interview Questions (Hidden by default) -->
                 <div id="exit-interview-questions" class="hidden space-y-4 rounded-lg border border-gray-300 bg-gray-50 p-4 mt-4">
-                    <h4 class="text-md font-semibold text-gray-800">Exit Interview Mock-up</h4>
-                    <p class="text-sm text-gray-600">This section would be filled out during/after the interview.</p>
+                    <h4 class="text-md font-semibold text-gray-800">แบบฟอร์มสัมภาษณ์ (ตัวอย่าง)</h4>
+                    <p class="text-sm text-gray-600">ส่วนนี้จะถูกกรอกระหว่างหรือหลังการสัมภาษณ์</p>
                     
                     <div>
-                        <label for="mock-q1" class="block text-sm font-medium text-gray-700">1. What was the primary reason for leaving?</label>
-                        <input type="text" id="mock-q1" name="mock-q1" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="e.g., Compensation, Career Growth...">
+                        <label for="mock-q1" class="block text-sm font-medium text-gray-700">1. เหตุผลหลักในการลาออกคืออะไร?</label>
+                        <input type="text" id="mock-q1" name="mock-q1" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="เช่น เงินเดือน, ความก้าวหน้า...">
                     </div>
 
                     <div>
-                        <label for="mock-q2" class="block text-sm font-medium text-gray-700">2. How would you rate your relationship with your direct supervisor?</label>
+                        <label for="mock-q2" class="block text-sm font-medium text-gray-700">2. คุณให้คะแนนความสัมพันธ์กับหัวหน้างานของคุณอย่างไร?</label>
                         <select id="mock-q2" name="mock-q2" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Select rating...</option>
-                            <option value="5">5 - Excellent</option>
-                            <option value="4">4 - Good</option>
-                            <option value="3">3 - Neutral</option>
-                            <option value="2">2 - Poor</option>
-                            <option value="1">1 - Very Poor</option>
+                            <option value="">เลือกคะแนน...</option>
+                            <option value="5">5 - ยอดเยี่ยม</option>
+                            <option value="4">4 - ดี</option>
+                            <option value="3">3 - ปานกลาง</option>
+                            <option value="2">2 - แย่</option>
+                            <option value="1">1 - แย่มาก</option>
                         </select>
                     </div>
 
                     <div>
-                        <label for="mock-q3" class="block text-sm font-medium text-gray-700">3. What did you like most about working here?</label>
+                        <label for="mock-q3" class="block text-sm font-medium text-gray-700">3. คุณชอบอะไรมากที่สุดในการทำงานที่นี่?</label>
                         <textarea id="mock-q3" name="mock-q3" rows="2" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
                     </div>
 
                     <div>
-                        <label for="mock-q4" class="block text-sm font-medium text-gray-700">4. What could be improved?</label>
+                        <label for="mock-q4" class="block text-sm font-medium text-gray-700">4. อะไรที่ควรได้รับการปรับปรุง?</label>
                         <textarea id="mock-q4" name="mock-q4" rows="2" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
                     </div>
                 </div>
 
                 <div>
-                    <label for="notes" class="block text-sm font-medium text-gray-700">Additional Notes (Optional)</label>
-                    <textarea id="notes" name="notes" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="e.g. BA is willing to train replacement..."></textarea>
+                    <label for="notes" class="block text-sm font-medium text-gray-700">หมายเหตุเพิ่มเติม (ถ้ามี)</label>
+                    <textarea id="notes" name="notes" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="เช่น BA ยินดีที่จะสอนงานคนใหม่..."></textarea>
                 </div>
 
                 <!-- Error Message --><p id="modal-error" class="text-sm text-red-600 hidden"></p>
 
                 <!-- Modal Footer (Actions) --><div class="pt-4 flex justify-end space-x-3">
                     <button type="button" id="cancel-modal-btn" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-                        Cancel
+                        ยกเลิก
                     </button>
                     <button type="submit" id="submit-report-btn" class="inline-flex justify-center rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
-                        <span id="submit-btn-text">Submit Report</span>
+                        <span id="submit-btn-text">ส่งรายงาน</span>
                         <svg id="submit-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -174,7 +175,7 @@
             </div>
             <div class="ml-4 flex flex-shrink-0">
                 <button type="button" id="toast-close-btn" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    <span class="sr-only">Close</span>
+                    <span class="sr-only">ปิด</span>
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
                     </svg>
@@ -191,14 +192,14 @@
             {
                 id: 's1001',
                 storeName: 'Siam Paragon',
-                baName: 'Arisa V.',
+                baName: 'อริสา ว.',
                 baPhone: '081-111-2222',
                 status: 'Active' // 'Active', 'Vacant', 'Pending'
             },
             {
                 id: 's1002',
                 storeName: 'CentralWorld',
-                baName: 'David K.',
+                baName: 'เดวิด ค.',
                 baPhone: '082-333-4444',
                 status: 'Active'
             },
@@ -212,21 +213,21 @@
             {
                 id: 's1004',
                 storeName: 'Mega Bangna',
-                baName: 'Siriporn L.',
+                baName: 'ศิริพร ล.',
                 baPhone: '084-555-6677',
                 status: 'Active'
             },
             {
                 id: 's1005',
                 storeName: 'Central Ladprao',
-                baName: 'Michael P.',
+                baName: 'ไมเคิล พ.',
                 baPhone: '085-777-8888',
                 status: 'Pending' // 'Pending' means a report was submitted
             },
             {
                 id: 's1006',
                 storeName: 'Fashion Island',
-                baName: 'Chanisa T.',
+                baName: 'ชนิดา ท.',
                 baPhone: '086-999-0000',
                 status: 'Active'
             }
@@ -293,31 +294,31 @@
 
             let statusColor, statusText;
             let reportBtnDisabled = false;
-            let reportBtnText = "Report Vacancy";
+            let reportBtnText = "รายงานตำแหน่งว่าง";
             let reportBtnColor = "bg-red-600 hover:bg-red-700 focus:ring-red-500";
 
             switch (status) {
                 case 'Active':
                     statusColor = 'bg-green-100 text-green-800';
-                    statusText = 'Active';
+                    statusText = 'ปฏิบัติงาน';
                     break;
                 case 'Vacant':
                     statusColor = 'bg-yellow-100 text-yellow-800';
-                    statusText = 'Vacant';
+                    statusText = 'ว่าง';
                     reportBtnDisabled = true;
-                    reportBtnText = "Vacancy Reported";
+                    reportBtnText = "รายงานแล้ว";
                     reportBtnColor = "bg-gray-400 cursor-not-allowed";
                     break;
                 case 'Pending':
                     statusColor = 'bg-blue-100 text-blue-800';
-                    statusText = 'Pending Replacement';
+                    statusText = 'รอคนแทน';
                     reportBtnDisabled = true;
-                    reportBtnText = "Pending";
+                    reportBtnText = "รอดำเนินการ";
                     reportBtnColor = "bg-gray-400 cursor-not-allowed";
                     break;
                 default:
                     statusColor = 'bg-gray-100 text-gray-800';
-                    statusText = 'Unknown';
+                    statusText = 'ไม่ทราบสถานะ';
             }
 
             return `
@@ -367,7 +368,7 @@
             if (!store) return;
             
             modalStoreName.textContent = store.storeName;
-            modalBaInfo.textContent = `Current BA: ${store.baName}`;
+            modalBaInfo.textContent = `BA ปัจจุบัน: ${store.baName}`;
             modalStoreId.value = store.id;
             
             // Set min date for exit date to today
@@ -458,9 +459,9 @@
                 await new Promise((resolve, reject) => {
                     setTimeout(() => {
                         // Simulate a potential error
-                        // if (Math.random() > 0.8) {
-                        //    reject(new Error('Failed to submit. Please try again.'));
-                        // }
+                         // if (Math.random() > 0.8) {
+                         //    reject(new Error('ไม่สามารถส่งรายงานได้ กรุณาลองใหม่อีกครั้ง'));
+                         // }
                         
                         // Find and update the mock data
                         const storeIndex = mockStoreData.findIndex(s => s.id === reportData.storeId);
@@ -477,14 +478,14 @@
                 // Success
                 closeModal();
                 renderStores(mockStoreData); // Re-render the list with updated status
-                showToast('Vacancy report submitted successfully!');
+                showToast('ส่งรายงานตำแหน่งว่างเรียบร้อยแล้ว!');
 
             } catch (error) {
                 // Handle error
                 console.error('Submission failed:', error);
-                modalError.textContent = error.message || 'An unknown error occurred.';
+                modalError.textContent = error.message || 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ';
                 modalError.classList.remove('hidden');
-                showToast('Failed to submit report.', true);
+                showToast('ไม่สามารถส่งรายงานได้', true);
             } finally {
                 // Reset loading state
                 submitBtnText.classList.remove('hidden');
