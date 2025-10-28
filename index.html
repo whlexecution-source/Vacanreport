@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BA Vacancy Reporter</title>
-    <!-- 1. Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 2. Use Inter font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- 1. Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Use Inter font --><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 3. Add simple icons (Heroicons) -->
-    <script type_application_javascript src="https://unpkg.com/heroicons@2.1.1/24/outline/index.js"></script>
+    <!-- 3. Add simple icons (Heroicons) --><script type_application_javascript src="https://unpkg.com/heroicons@2.1.1/24/outline/index.js"></script>
     <style>
         /* Custom styles */
         body {
@@ -30,18 +27,20 @@
 </head>
 <body class="bg-gray-100 min-h-full">
 
-    <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-            <h1 class="text-2xl font-bold tracking-tight text-gray-900">BA Vacancy Reporter</h1>
-            <p class="text-gray-600">Report upcoming store vacancies for BA replacements.</p>
+    <!-- Header --><header class="bg-white shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <!-- Logo - Added here --><div class="flex-shrink-0">
+                <img class="h-10 w-auto" src="https://drive.google.com/file/d/1aBNyqwyytFhwGyChWZ-2M7KMghKyR5QS/view?usp=sharing="Company Logo" onerror="this.alt='Logo'; this.style.display='none';">
+            </div>
+            <div class="flex-grow ml-4">
+                <h1 class="text-2xl font-bold tracking-tight text-gray-900">BA Vacancy Reporter</h1>
+                <p class="text-gray-600">Report upcoming store vacancies for BA replacements.</p>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-4xl mx-auto p-4 sm:px-6 lg:px-8">
-        <!-- Search Bar -->
-        <div class="mb-6">
+    <!-- Main Content --><main class="max-w-4xl mx-auto p-4 sm:px-6 lg:px-8">
+        <!-- Search Bar --><div class="mb-6">
             <label for="search" class="block text-sm font-medium text-gray-700 sr-only">Search Stores</label>
             <div class="relative rounded-lg shadow-sm">
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -53,20 +52,16 @@
             </div>
         </div>
 
-        <!-- Store Card Grid -->
-        <section>
+        <!-- Store Card Grid --><section>
             <div id="store-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                <!-- Store cards will be injected here by JavaScript -->
-                <p id="no-results" class="text-gray-500 hidden col-span-full text-center">No stores found.</p>
+                <!-- Store cards will be injected here by JavaScript --><p id="no-results" class="text-gray-500 hidden col-span-full text-center">No stores found.</p>
             </div>
         </section>
     </main>
 
-    <!-- Report Vacancy Modal -->
-    <div id="report-modal" class="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-75 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 m-4 overflow-hidden transform transition-all">
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between">
+    <!-- Report Vacancy Modal --><div id="report-modal" class="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-75 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 m-4 overflow-y-auto max-h-[90vh] transform transition-all">
+            <!-- Modal Header --><div class="flex items-center justify-between">
                 <h3 class="text-xl font-semibold text-gray-900" id="modal-title">Report Vacancy</h3>
                 <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
                     <span class="sr-only">Close</span>
@@ -76,17 +71,14 @@
                 </button>
             </div>
 
-            <!-- Modal Body -->
-            <form id="report-form" class="mt-4 space-y-4">
-                <!-- Store Info -->
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+            <!-- Modal Body --><form id="report-form" class="mt-4 space-y-4">
+                <!-- Store Info --><div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
                     <p class="text-sm font-medium text-gray-500">Store</p>
                     <p class="text-lg font-semibold text-gray-900" id="modal-store-name">Siam Paragon</p>
                     <p class="text-sm text-gray-700 mt-1" id="modal-ba-info">Current BA: Arisa V.</p>
                 </div>
 
-                <!-- Form Inputs -->
-                <input type="hidden" id="modal-store-id">
+                <!-- Form Inputs --><input type="hidden" id="modal-store-id">
                 
                 <div>
                     <label for="exit-date" class="block text-sm font-medium text-gray-700">BA's Last Day (Exit Date)</label>
@@ -105,8 +97,7 @@
                     </select>
                 </div>
 
-                <!-- NEW FIELD: Exit Interview -->
-                <div>
+                <!-- Exit Interview --><div>
                     <label for="exit-interview" class="block text-sm font-medium text-gray-700">Exit Interview Status</label>
                     <select id="exit-interview" name="exit-interview" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         <option value="">Select status...</option>
@@ -118,16 +109,47 @@
                     </select>
                 </div>
 
+                <!-- NEW: Mock Exit Interview Questions (Hidden by default) -->
+                <div id="exit-interview-questions" class="hidden space-y-4 rounded-lg border border-gray-300 bg-gray-50 p-4 mt-4">
+                    <h4 class="text-md font-semibold text-gray-800">Exit Interview Mock-up</h4>
+                    <p class="text-sm text-gray-600">This section would be filled out during/after the interview.</p>
+                    
+                    <div>
+                        <label for="mock-q1" class="block text-sm font-medium text-gray-700">1. What was the primary reason for leaving?</label>
+                        <input type="text" id="mock-q1" name="mock-q1" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="e.g., Compensation, Career Growth...">
+                    </div>
+
+                    <div>
+                        <label for="mock-q2" class="block text-sm font-medium text-gray-700">2. How would you rate your relationship with your direct supervisor?</label>
+                        <select id="mock-q2" name="mock-q2" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Select rating...</option>
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Good</option>
+                            <option value="3">3 - Neutral</option>
+                            <option value="2">2 - Poor</option>
+                            <option value="1">1 - Very Poor</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="mock-q3" class="block text-sm font-medium text-gray-700">3. What did you like most about working here?</label>
+                        <textarea id="mock-q3" name="mock-q3" rows="2" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <div>
+                        <label for="mock-q4" class="block text-sm font-medium text-gray-700">4. What could be improved?</label>
+                        <textarea id="mock-q4" name="mock-q4" rows="2" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                    </div>
+                </div>
+
                 <div>
                     <label for="notes" class="block text-sm font-medium text-gray-700">Additional Notes (Optional)</label>
                     <textarea id="notes" name="notes" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="e.g. BA is willing to train replacement..."></textarea>
                 </div>
 
-                <!-- Error Message -->
-                <p id="modal-error" class="text-sm text-red-600 hidden"></p>
+                <!-- Error Message --><p id="modal-error" class="text-sm text-red-600 hidden"></p>
 
-                <!-- Modal Footer (Actions) -->
-                <div class="pt-4 flex justify-end space-x-3">
+                <!-- Modal Footer (Actions) --><div class="pt-4 flex justify-end space-x-3">
                     <button type="button" id="cancel-modal-btn" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
                         Cancel
                     </button>
@@ -143,12 +165,10 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast-notification" class="fixed bottom-5 right-5 z-20 hidden max-w-xs rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
+    <!-- Toast Notification --><div id="toast-notification" class="fixed bottom-5 right-5 z-20 hidden max-w-xs rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
         <div class="flex items-start">
             <div class="flex-shrink-0" id="toast-icon">
-                <!-- Icon will be inserted here -->
-            </div>
+                <!-- Icon will be inserted here --></div>
             <div class="ml-3 w-0 flex-1 pt-0.5">
                 <p class="text-sm font-medium text-gray-900" id="toast-message">Report submitted successfully!</p>
             </div>
@@ -233,6 +253,8 @@
         const modalStoreId = document.getElementById('modal-store-id');
         const exitDateInput = document.getElementById('exit-date');
         const reasonInput = document.getElementById('reason');
+        const exitInterviewInput = document.getElementById('exit-interview'); 
+        const exitInterviewQuestions = document.getElementById('exit-interview-questions'); // NEW
         const notesInput = document.getElementById('notes');
         
         // Toast Elements
@@ -362,6 +384,7 @@
             modal.classList.add('hidden');
             document.body.style.overflow = 'auto';
             reportForm.reset();
+            exitInterviewQuestions.classList.add('hidden'); // NEW: Hide interview questions on close
             modalError.classList.add('hidden');
             modalError.textContent = '';
         }
@@ -406,9 +429,22 @@
                 storeId: modalStoreId.value,
                 exitDate: exitDateInput.value,
                 reason: reasonInput.value,
-                exitInterviewStatus: document.getElementById('exit-interview').value, // Added this line
+                exitInterviewStatus: exitInterviewInput.value, 
                 notes: notesInput.value,
+                exitInterviewData: null // NEW: Placeholder for interview data
             };
+
+            // NEW: If interview is completed, grab the mock data
+            if (reportData.exitInterviewStatus === 'Completed') {
+                reportData.exitInterviewData = {
+                    q1_reason: document.getElementById('mock-q1').value,
+                    q2_supervisor_rating: document.getElementById('mock-q2').value,
+                    q3_liked_most: document.getElementById('mock-q3').value,
+                    q4_improvement: document.getElementById('mock-q4').value,
+                };
+            }
+
+            console.log("Submitting report:", reportData); // Log for simulation
 
             // Show loading state
             submitBtnText.classList.add('hidden');
@@ -490,6 +526,15 @@
             // Close if clicking on the dark backdrop
             if (e.target === modal) {
                 closeModal();
+            }
+        });
+
+        // NEW: Show/hide mock exit interview questions based on status
+        exitInterviewInput.addEventListener('change', (e) => {
+            if (e.target.value === 'Completed') {
+                exitInterviewQuestions.classList.remove('hidden');
+            } else {
+                exitInterviewQuestions.classList.add('hidden');
             }
         });
 
