@@ -34,7 +34,7 @@
                 <img class="h-10 w-auto" src="YOUR_LOGO_URL_HERE" alt="โลโก้บริษัท" onerror="this.alt='Logo'; this.style.display='none';">
             </div>
             <div class="flex-grow ml-4">
-                <h1 class="text-2xl font-bold tracking-tight text-gray-900">ระบบรายงาน BA ว่าง</h1>
+                <h1 class="text-2xl font-bold tracking-tight text-gray-900">รายงาน store vacancy</h1>
                 <p class="text-gray-600">รายงานตำแหน่ง BA ว่างในร้านค้าล่วงหน้า</p>
             </div>
         </div>
@@ -91,9 +91,7 @@
                     <select id="reason" name="reason" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         <option value="">เลือกเหตุผล...</option>
                         <option value="Resigned">ลาออก</option>
-                        <option value="Terminated">ถูกเลิกจ้าง</option>
-                        <option value="Transferred">ย้ายสาขา</option>
-                        <option value="Maternity Leave">ลาคลอด</option>
+                        <option value="Terminated">เลิกจ้าง</option>
                         <option value="Other">อื่นๆ</option>
                     </select>
                 </div>
@@ -103,7 +101,7 @@
                     <select id="exit-interview" name="exit-interview" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         <option value="">เลือกสถานะ...</option>
                         <option value="Scheduled">นัดหมายแล้ว</option>
-                        <option value="Completed">สัมภาษณ์เสร็จสิ้น</option>
+                        <option value="Completed">เริ่มการสัมภาษณ์</option>
                         <option value="Requested">ร้องขอแล้ว (รอดำเนินการ)</option>
                         <option value="Declined">BA ปฏิเสธ</option>
                         <option value="Not Required">ไม่จำเป็นต้องสัมภาษณ์</option>
@@ -534,7 +532,7 @@
         exitInterviewInput.addEventListener('change', (e) => {
             if (e.target.value === 'Completed') {
                 exitInterviewQuestions.classList.remove('hidden');
-            } else {
+S            } else {
                 exitInterviewQuestions.classList.add('hidden');
             }
         });
@@ -550,4 +548,5 @@
     </script>
 </body>
 </html>
+
 
