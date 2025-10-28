@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BA Vacancy Reporter</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Use Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 3. Add simple icons (Heroicons) -->
+    <script type_application_javascript src="https://unpkg.com/heroicons@2.1.1/24/outline/index.js"></script>
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-full">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900">BA Vacancy Reporter</h1>
+            <p class="text-gray-600">Report upcoming store vacancies for BA replacements.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-4 sm:px-6 lg:px-8">
+        <!-- Search Bar -->
+        <div class="mb-6">
+            <label for="search" class="block text-sm font-medium text-gray-700 sr-only">Search Stores</label>
+            <div class="relative rounded-lg shadow-sm">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input type="search" id="store-search" class="block w-full rounded-lg border-gray-300 pl-10 py-2.5 text-base focus:border-blue-500 focus:ring-blue-500" placeholder="Search by store name or BA name...">
+            </div>
+        </div>
+
+        <!-- Store Card Grid -->
+        <section>
+            <div id="store-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Store cards will be injected here by JavaScript -->
+                <p id="no-results" class="text-gray-500 hidden col-span-full text-center">No stores found.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Report Vacancy Modal -->
+    <div id="report-modal" class="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-75 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 m-4 overflow-hidden transform transition-all">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-gray-900" id="modal-title">Report Vacancy</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
+                    <span class="sr-only">Close</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <form id="report-form" class="mt-4 space-y-4">
+                <!-- Store Info -->
+                <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                    <p class="text-sm font-medium text-gray-500">Store</p>
+                    <p class="text-lg font-semibold text-gray-900" id="modal-store-name">Siam Paragon</p>
+                    <p class="text-sm text-gray-700 mt-1" id="modal-ba-info">Current BA: Arisa V.</p>
+                </div>
+
+                <!-- Form Inputs -->
+                <input type="hidden" id="modal-store-id">
+                
+                <div>
+                    <label for="exit-date" class="block text-sm font-medium text-gray-700">BA's Last Day (Exit Date)</label>
+                    <input type="date" id="exit-date" name="exit-date" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label for="reason" class="block text-sm font-medium text-gray-700">Reason for Vacancy</label>
+                    <select id="reason" name="reason" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">Select a reason...</option>
+                        <option value="Resigned">Resigned</option>
+                        <option value="Terminated">Terminated</option>
+                        <option value="Transferred">Transferred</option>
+                        <option value="Maternity Leave">Maternity Leave</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- NEW FIELD: Exit Interview -->
+                <div>
+                    <label for="exit-interview" class="block text-sm font-medium text-gray-700">Exit Interview Status</label>
+                    <select id="exit-interview" name="exit-interview" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">Select status...</option>
+                        <option value="Scheduled">Scheduled</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Requested">Requested (Pending)</option>
+                        <option value="Declined">BA Declined</option>
+                        <option value="Not Required">Not Required</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="notes" class="block text-sm font-medium text-gray-700">Additional Notes (Optional)</label>
+                    <textarea id="notes" name="notes" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="e.g. BA is willing to train replacement..."></textarea>
+                </div>
+
+                <!-- Error Message -->
+                <p id="modal-error" class="text-sm text-red-600 hidden"></p>
+
+                <!-- Modal Footer (Actions) -->
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" id="cancel-modal-btn" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" id="submit-report-btn" class="inline-flex justify-center rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+                        <span id="submit-btn-text">Submit Report</span>
+                        <svg id="submit-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-20 hidden max-w-xs rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
+        <div class="flex items-start">
+            <div class="flex-shrink-0" id="toast-icon">
+                <!-- Icon will be inserted here -->
+            </div>
+            <div class="ml-3 w-0 flex-1 pt-0.5">
+                <p class="text-sm font-medium text-gray-900" id="toast-message">Report submitted successfully!</p>
+            </div>
+            <div class="ml-4 flex flex-shrink-0">
+                <button type="button" id="toast-close-btn" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    <span class="sr-only">Close</span>
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- MOCK DATA ---
+        // In a real app, this would come from your backend (like Google Apps Script)
+        let mockStoreData = [
+            {
+                id: 's1001',
+                storeName: 'Siam Paragon',
+                baName: 'Arisa V.',
+                baPhone: '081-111-2222',
+                status: 'Active' // 'Active', 'Vacant', 'Pending'
+            },
+            {
+                id: 's1002',
+                storeName: 'CentralWorld',
+                baName: 'David K.',
+                baPhone: '082-333-4444',
+                status: 'Active'
+            },
+            {
+                id: 's1003',
+                storeName: 'EmQuartier',
+                baName: 'N/A',
+                baPhone: 'N/A',
+                status: 'Vacant'
+            },
+            {
+                id: 's1004',
+                storeName: 'Mega Bangna',
+                baName: 'Siriporn L.',
+                baPhone: '084-555-6677',
+                status: 'Active'
+            },
+            {
+                id: 's1005',
+                storeName: 'Central Ladprao',
+                baName: 'Michael P.',
+                baPhone: '085-777-8888',
+                status: 'Pending' // 'Pending' means a report was submitted
+            },
+            {
+                id: 's1006',
+                storeName: 'Fashion Island',
+                baName: 'Chanisa T.',
+                baPhone: '086-999-0000',
+                status: 'Active'
+            }
+        ];
+
+        // --- DOM Elements ---
+        const storeGrid = document.getElementById('store-grid');
+        const searchInput = document.getElementById('store-search');
+        const noResultsEl = document.getElementById('no-results');
+        
+        // Modal Elements
+        const modal = document.getElementById('report-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const cancelModalBtn = document.getElementById('cancel-modal-btn');
+        const reportForm = document.getElementById('report-form');
+        const submitReportBtn = document.getElementById('submit-report-btn');
+        const submitBtnText = document.getElementById('submit-btn-text');
+        const submitSpinner = document.getElementById('submit-spinner');
+        const modalError = document.getElementById('modal-error');
+        
+        // Modal Form Fields
+        const modalStoreName = document.getElementById('modal-store-name');
+        const modalBaInfo = document.getElementById('modal-ba-info');
+        const modalStoreId = document.getElementById('modal-store-id');
+        const exitDateInput = document.getElementById('exit-date');
+        const reasonInput = document.getElementById('reason');
+        const notesInput = document.getElementById('notes');
+        
+        // Toast Elements
+        const toast = document.getElementById('toast-notification');
+        const toastIcon = document.getElementById('toast-icon');
+        const toastMessage = document.getElementById('toast-message');
+        const toastCloseBtn = document.getElementById('toast-close-btn');
+
+        // --- Utility Functions ---
+
+        /**
+         * Renders the list of store cards based on the provided data
+         * @param {Array} stores - Array of store objects
+         */
+        function renderStores(stores) {
+            storeGrid.innerHTML = ''; // Clear existing grid
+            
+            if (stores.length === 0) {
+                noResultsEl.classList.remove('hidden');
+                return;
+            }
+            noResultsEl.classList.add('hidden');
+
+            stores.forEach(store => {
+                const card = createStoreCard(store);
+                storeGrid.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        /**
+         * Generates the HTML string for a single store card
+         * @param {Object} store - The store data object
+         */
+        function createStoreCard(store) {
+            const { id, storeName, baName, baPhone, status } = store;
+
+            let statusColor, statusText;
+            let reportBtnDisabled = false;
+            let reportBtnText = "Report Vacancy";
+            let reportBtnColor = "bg-red-600 hover:bg-red-700 focus:ring-red-500";
+
+            switch (status) {
+                case 'Active':
+                    statusColor = 'bg-green-100 text-green-800';
+                    statusText = 'Active';
+                    break;
+                case 'Vacant':
+                    statusColor = 'bg-yellow-100 text-yellow-800';
+                    statusText = 'Vacant';
+                    reportBtnDisabled = true;
+                    reportBtnText = "Vacancy Reported";
+                    reportBtnColor = "bg-gray-400 cursor-not-allowed";
+                    break;
+                case 'Pending':
+                    statusColor = 'bg-blue-100 text-blue-800';
+                    statusText = 'Pending Replacement';
+                    reportBtnDisabled = true;
+                    reportBtnText = "Pending";
+                    reportBtnColor = "bg-gray-400 cursor-not-allowed";
+                    break;
+                default:
+                    statusColor = 'bg-gray-100 text-gray-800';
+                    statusText = 'Unknown';
+            }
+
+            return `
+                <article class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-semibold text-gray-900 truncate">${storeName}</h2>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor}">
+                                ${statusText}
+                            </span>
+                        </div>
+                        <div class="mt-3 space-y-2">
+                            <p class="text-sm text-gray-600 flex items-center">
+                                <svg class="h-4 w-4 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-5.5-2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM10 12a5.5 5.5 0 00-5.447 4.597A.75.75 0 005.28 17.5h9.44a.75.75 0 00.727-.903A5.5 5.5 0 0010 12z" clip-rule="evenodd" />
+                                </svg>
+                                ${baName}
+                            </p>
+                            <p class="text-sm text-gray-600 flex items-center">
+                                <svg class="h-4 w-4 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                  <path d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z" />
+                                </svg>
+                                ${baPhone}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-auto bg-gray-50 px-5 py-3">
+                        <button 
+                            type="button" 
+                            class="report-button w-full inline-flex justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm ${reportBtnColor} focus:outline-none focus:ring-2 focus:ring-offset-2"
+                            data-store-id="${id}"
+                            ${reportBtnDisabled ? 'disabled' : ''}
+                        >
+                            ${reportBtnText}
+                        </button>
+                    </div>
+                </article>
+            `;
+        }
+        
+        /**
+         * Opens the report modal and populates it with store data
+         * @param {string} storeId - The ID of the store to report
+         */
+        function openModal(storeId) {
+            const store = mockStoreData.find(s => s.id === storeId);
+            if (!store) return;
+            
+            modalStoreName.textContent = store.storeName;
+            modalBaInfo.textContent = `Current BA: ${store.baName}`;
+            modalStoreId.value = store.id;
+            
+            // Set min date for exit date to today
+            exitDateInput.min = new Date().toISOString().split('T')[0];
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        /**
+         * Closes and resets the report modal
+         */
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            reportForm.reset();
+            modalError.classList.add('hidden');
+            modalError.textContent = '';
+        }
+
+        /**
+         * Shows a toast notification
+         * @param {string} message - The message to display
+         * @param {boolean} [isError=false] - True if it's an error message
+         */
+        function showToast(message, isError = false) {
+            toastMessage.textContent = message;
+            
+            if (isError) {
+                toastIcon.innerHTML = `
+                    <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>`;
+            } else {
+                toastIcon.innerHTML = `
+                    <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>`;
+            }
+            
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        /**
+         * Simulates submitting the report to a backend (e.g., Google Apps Script)
+         */
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // --- THIS IS WHERE YOU'D CALL YOUR GOOGLE APPS SCRIPT ---
+            // const backendUrl = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+            
+            const reportData = {
+                storeId: modalStoreId.value,
+                exitDate: exitDateInput.value,
+                reason: reasonInput.value,
+                exitInterviewStatus: document.getElementById('exit-interview').value, // Added this line
+                notes: notesInput.value,
+            };
+
+            // Show loading state
+            submitBtnText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            submitReportBtn.disabled = true;
+            modalError.classList.add('hidden');
+
+            try {
+                // --- Start Simulation ---
+                // In a real app, you would 'await fetch(backendUrl, ...)'
+                await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        // Simulate a potential error
+                        // if (Math.random() > 0.8) {
+                        //    reject(new Error('Failed to submit. Please try again.'));
+                        // }
+                        
+                        // Find and update the mock data
+                        const storeIndex = mockStoreData.findIndex(s => s.id === reportData.storeId);
+                        if (storeIndex !== -1) {
+                            mockStoreData[storeIndex].status = 'Pending';
+                            mockStoreData[storeIndex].baName = 'N/A';
+                            mockStoreData[storeIndex].baPhone = 'N/A';
+                        }
+                        resolve({ success: true });
+                    }, 1500); // Simulate 1.5 second network delay
+                });
+                // --- End Simulation ---
+
+                // Success
+                closeModal();
+                renderStores(mockStoreData); // Re-render the list with updated status
+                showToast('Vacancy report submitted successfully!');
+
+            } catch (error) {
+                // Handle error
+                console.error('Submission failed:', error);
+                modalError.textContent = error.message || 'An unknown error occurred.';
+                modalError.classList.remove('hidden');
+                showToast('Failed to submit report.', true);
+            } finally {
+                // Reset loading state
+                submitBtnText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+                submitReportBtn.disabled = false;
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Initial render on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStores(mockStoreData);
+        });
+
+        // Search/filter handler
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredStores = mockStoreData.filter(store => 
+                store.storeName.toLowerCase().includes(searchTerm) ||
+                store.baName.toLowerCase().includes(searchTerm)
+            );
+            renderStores(filteredStores);
+        });
+
+        // Open modal when a "Report Vacancy" button is clicked
+        storeGrid.addEventListener('click', (e) => {
+            const reportButton = e.target.closest('.report-button');
+            if (reportButton) {
+                const storeId = reportButton.dataset.storeId;
+                openModal(storeId);
+            }
+        });
+
+        // Close modal listeners
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            // Close if clicking on the dark backdrop
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Form submission listener
+        reportForm.addEventListener('submit', handleFormSubmit);
+        
+        // Toast close button
+        toastCloseBtn.addEventListener('click', () => {
+            toast.classList.add('hidden');
+        });
+
+    </script>
+</body>
+</html>
+
